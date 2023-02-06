@@ -36,7 +36,7 @@ export class UsersController {
   ) {}
 
   @Post('/signup')
-  // using the nestjs decorator Body and our custom DTO to makes sure email and password is validated
+  // using the nestjs decorator Bouthdy and our custom DTO to makes sure email and password is validated
   createUser(@Body() body: CreateUserDTO) {
     const { name, email, password } = body;
 
@@ -66,5 +66,11 @@ export class UsersController {
   async updateUser(@Param('id') id: string, @Body() body: UpdateUserDTO) {
     this.usersService.update(parseInt(id), body);
     return { status: 200, msg: 'User updated!' };
+  }
+
+  // testing OAuth implementation
+  @Post('/oauth/signin')
+  oAuthSignIn(@Body() { username, password }) {
+    console.log("oauth signin's username, password:", username, password);
   }
 }

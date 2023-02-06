@@ -6,6 +6,7 @@ import {
   AfterRemove,
   AfterUpdate,
 } from 'typeorm';
+
 import { Exclude } from 'class-transformer';
 
 // all the properties that a user would have, and that we would want to store in the database

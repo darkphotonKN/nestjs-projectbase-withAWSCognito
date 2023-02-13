@@ -18,7 +18,7 @@ async function bootstrap() {
       whitelist: true, // for security
     }),
   );
-
+  app.setGlobalPrefix('api');
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');

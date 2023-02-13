@@ -40,7 +40,7 @@ export class UsersController {
   createUser(@Body() body: CreateUserDTO) {
     const { name, email, password } = body;
 
-    this.authService.signUp(email, name, password);
+    return this.authService.signUp(email, name, password);
   }
 
   // remember that everything coming from requests are strings - we need to parse them into numbers ourselves

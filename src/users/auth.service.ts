@@ -3,7 +3,11 @@ import { promisify } from 'util';
 
 const scrypt = promisify(_scrypt); // to use promises istead of functions
 
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Injectable()
@@ -32,5 +36,24 @@ export class AuthService {
 
     // return user
     return user;
+  }
+
+  async signIn(email: string, password: string) {
+    const [user] = await this.usersService.find(email);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // using salt to hash incoming password before matching
+    const [salt, storedPass] = user.password.split('.');
+
+    const encryptedIncPass = (
+      (await scrypt(password, salt, 32)) as Buffer
+    ).toString('hex');
+
+    if (encryptedIncPass === storedPass) {
+      return user;
+    }
   }
 }

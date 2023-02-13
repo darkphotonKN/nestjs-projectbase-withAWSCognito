@@ -21,6 +21,7 @@ import {
 } from 'src/interceptors/serialize.interceptor';
 import { UserDTO } from './dtos/users.dto';
 import { AuthService } from './auth.service';
+import { SignInUserDTO } from './dtos/signin-user.dto';
 
 // Nest recommended approach (not the best solution - I implemented custom interceptors (DTOs) for flexibility
 // @UseInterceptors(ClassSerializerInterceptor) // removes password in response if Exclude() decorator was
@@ -41,6 +42,17 @@ export class UsersController {
     const { name, email, password } = body;
 
     this.authService.signUp(email, name, password);
+  }
+
+  @Post('/signin')
+  signInUser(@Body() body: SignInUserDTO) {
+    const { email, password } = body;
+    const user = this.authService.signIn(email, password);
+    if (user) {
+      return {
+        message: 'Credentials authenticated, login was successful.',
+      };
+    }
   }
 
   // remember that everything coming from requests are strings - we need to parse them into numbers ourselves
@@ -66,11 +78,5 @@ export class UsersController {
   async updateUser(@Param('id') id: string, @Body() body: UpdateUserDTO) {
     this.usersService.update(parseInt(id), body);
     return { status: 200, msg: 'User updated!' };
-  }
-
-  // testing OAuth implementation
-  @Post('/oauth/signin')
-  oAuthSignIn(@Body() { username, password }) {
-    console.log("oauth signin's username, password:", username, password);
   }
 }

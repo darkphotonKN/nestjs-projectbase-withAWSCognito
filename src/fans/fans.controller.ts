@@ -43,12 +43,6 @@ export class FansController {
     return this.fansService.create(modelNo, info, type, seriesNo, name);
   }
 
-  @Get('/getAllFans')
-  // using the nestjs decorator Bouthdy and our custom DTO to makes sure email and password is validated
-  getAllFans() {
-    return this.fansService.getAllFans();
-  }
-
   @Post('/pagination')
   // using the nestjs decorator Bouthdy and our custom DTO to makes sure email and password is validated
   pagination(@Body() body: PaginationDTO) {

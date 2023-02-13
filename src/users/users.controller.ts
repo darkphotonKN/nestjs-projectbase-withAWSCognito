@@ -50,11 +50,11 @@ export class UsersController {
     return this.usersService.findOne(parseInt(id));
   }
 
-  @Get('/findAllUsers')
-  findAllUsers(@Query('email') email: string) {
-    console.log('email:', email);
-    return this.usersService.find(email);
-  }
+  // @Get('/findAllUsers')
+  // findAllUsers(@Query('email') email: string) {
+  //   console.log('email:', email);
+  //   return this.usersService.find(email);
+  // }
 
   @Delete('/user/:id')
   removeUser(@Param('id') id: string) {

@@ -3,6 +3,11 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Fan } from './fan.entity';
 
+interface Filter {
+  type: string,
+  value: string[]
+}
+
 @Injectable()
 export class FansService {
   // this tells the DI system that we need the repository - it automatically creates an instance of this entity
@@ -15,16 +20,55 @@ export class FansService {
     this.repo.save(newFan);
     return { status: "success", createData: { modelNo, info, type, seriesNo, name }};
   }
-  
+   
   getAllFans() {
     return this.repo.find(); // returns array of all results
   }
 
-  async pagination(search: string, filter: any[], currentPage: number, perPageCounts: number) {
-    const fans = await this.repo.find()
+  // payload
+  // {
+  //   "search": "ttt",
+  //   "filter": [
+  //       {
+  //           "type": "gender", // radio
+  //           "value": ["all"]
+  //       },
+  //       {
+  //           "type": "color", // radio
+  //           "value": ["yellow"]
+  //       },
+  //       {
+  //           "type": "favorite", // checkbox
+  //           "value": ["javascript", "node", "react"]
+  //       },
+  //       {
+  //           "type": "date range", // date
+  //           "value": ["2023/02/01","2023/02/13"]
+  //       },
+  //       {
+  //           "type": "date", // date
+  //           "value": ["2023/02/01"]
+  //       }
+  //   ],
+  //   "currentPage": 2,
+  //   "perPageCounts": 2
+  // }
+  async pagination(search: string, filter: Filter[], currentPage: number, perPageCount: number) {
+    const take = perPageCount || 10
+    const page = currentPage || 1;
+    const skip= (page-1) * take ;
+    const keyword = search || ''
+    
+    const data2 = await this.repo.findAndCount({
+      // where: { name: Like('%' + keyword + '%') },
+      // order: { name: "DESC" },
+      take: take, // limit count per page
+      skip: skip // skip data earlier than now
+  })
     return {
-      total:fans.length, 
-      data: fans
+      totalCount:data2[1], 
+      data: data2[0],
+      currentPage,
     };
   }
 }

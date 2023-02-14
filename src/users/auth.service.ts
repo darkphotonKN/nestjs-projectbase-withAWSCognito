@@ -40,6 +40,7 @@ export class AuthService {
 
   async signIn(email: string, password: string) {
     const [user] = await this.usersService.find(email);
+    console.log(await this.usersService.find('test'));
 
     if (!user) {
       throw new NotFoundException('User not found');

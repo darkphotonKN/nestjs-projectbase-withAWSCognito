@@ -3,9 +3,9 @@ POST http://localhost:4000/api/auth/signup
 Content-Type: application/json
 
 {
-  "name": "nicky2", 
-  "email": "babayaga3@wrathmail.com",
-  "password": "audemyndyss212"
+  "name": "nicky3", 
+  "email": "babayaga4@wrathmail.com",
+  "password": "12345678"
 }
 
 ### Signs in an existing user 
@@ -13,14 +13,9 @@ POST http://localhost:4000/api/auth/signin
 Content-Type: application/json
 
 {
-  "email": "why",
-  "test": 12
+  "email": "babayaga4@wrathmail.com",
+  "password": "1234567"
 }
-
-
-### 
-GET http://localhost:4000/auth/findAllUsers
-Content-Type: application/json
 
 
 ### Gets a particular user 

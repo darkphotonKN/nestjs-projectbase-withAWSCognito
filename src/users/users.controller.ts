@@ -42,13 +42,16 @@ export class UsersController {
   }
 
   @Post('/signin')
-  signInUser(@Body() body: SignInUserDTO) {
+  async signInUser(@Body() body: SignInUserDTO) {
     const { email, password } = body;
-    const user = this.authService.signIn(email, password);
+
+    const user = await this.authService.signIn(email, password);
     if (user) {
       return {
         message: 'Credentials authenticated, login was successful.',
       };
+    } else {
+      return user;
     }
   }
 

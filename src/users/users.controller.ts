@@ -15,17 +15,14 @@ import { UpdateUserDTO } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
 
 // Custom Interceptor for Serialization
-import {
-  Serialize,
-  SerializeInterceptor,
-} from 'src/interceptors/serialize.interceptor';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDTO } from './dtos/users.dto';
 import { AuthService } from './auth.service';
 import { SignInUserDTO } from './dtos/signin-user.dto';
 
-// Nest recommended approach (not the best solution - I implemented custom interceptors (DTOs) for flexibility
+// Nest approach (!warning! not the best solution, having a quick search online and have found similar thoughts on this
+// - and so I implemented custom interceptors (DTOs) for flexibility)
 // @UseInterceptors(ClassSerializerInterceptor) // removes password in response if Exclude() decorator was
-// included in the entity creation
 
 // using my recommended approach
 @Serialize(UserDTO) // can also be applied per request handler method, right now its global for the entire controller

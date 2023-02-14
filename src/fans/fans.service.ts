@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Fan } from './fan.entity';
 
@@ -21,17 +21,22 @@ export class FansService {
     return { createdData: { modelNo, info, type, seriesNo, name }};
   }
 
-  async pagination(search: string, filter: Filter[], currentPage: number, perPageCount: number) {
-    const take = perPageCount || 10
+  async pagination(search: string, filter: Filter[], currentPage: number, limit: number) {
+    const take = limit || 10
     const page = currentPage || 1;
     const skip= (page-1) * take ;
-    const keyword = search || ''
-    
+    const keyword = search || 'fan'
     const data2 = await this.repo.findAndCount({
-      // where: { name: Like('%' + keyword + '%') },
-      // order: { name: "DESC" },
+      where: { 
+        // modelNo: Like(`%${keyword}%`),
+        // seriesNo: Like(`%${keyword}%`),
+        // info: Like(`%${keyword}%`), 
+        // type: Like(`%${keyword}%`),
+        name: Like(`%${keyword}%`)
+      },
+      order: { name: "DESC" },
       take: take, // limit count per page
-      skip: skip // skip data earlier than now
+      skip: skip // skip data earlier than currentPage
   })
     return {
       totalCount:data2[1], 

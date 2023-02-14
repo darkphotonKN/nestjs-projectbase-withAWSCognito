@@ -8,12 +8,17 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 
+import { Table } from './tables/table.entity';
+import { TablesModule } from './tables/tables.module';
+
+import { Fan } from './fans/fan.entity';
+import { FansModule } from './fans/fans.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite', // type of database
       database: 'db.sqlite', // name of database
-      entities: [User],
+      entities: [User, Table, Fan],
       /**
        * Extremely important setting *
        * This is only for DEVELOPMENT environment
@@ -28,6 +33,8 @@ import { User } from './users/user.entity';
     }),
 
     UsersModule,
+    TablesModule,
+    FansModule,
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],

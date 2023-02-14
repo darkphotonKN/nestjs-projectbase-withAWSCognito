@@ -1,5 +1,5 @@
 ### Create a new user 
-POST http://localhost:4000/auth/signup 
+POST http://localhost:4000/api/auth/signup 
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Signs in an existing user 
-POST http://localhost:4000/auth/signin
+POST http://localhost:4000/api/auth/signin
 Content-Type: application/json
 
 {
@@ -24,15 +24,15 @@ Content-Type: application/json
 
 
 ### Gets a particular user 
-GET http://localhost:4000/auth/user/4
+GET http://localhost:4000/api/auth/user/4
 Content-Type: application/json 
 
 ### Gets all users with this criteria  
-GET http://localhost:4000/auth/findAllUsers
+GET http://localhost:4000/api/auth/findAllUsers
 Content-Type: application/json 
 
 ### Update a user 
-PATCH http://localhost:4000/auth/updateUser/4
+PATCH http://localhost:4000/api/auth/updateUser/4
 Content-Type: application/json
 
 {
@@ -41,15 +41,59 @@ Content-Type: application/json
 
 
 ### Deletes a user
-DELETE http://localhost:4000/auth/user/3
+DELETE http://localhost:4000/api/auth/user/3
 Content-Type: application/json
 
 
 ### OAuth Sign in
-POST http://localhost:4000/auth/oauth/signin
+POST http://localhost:4000/api/auth/oauth/signin
 COntent-Type: application/json 
 
 {
   "username": "test",
   "password": "12321"
+}
+
+### create new fan
+POST http://localhost:4000/api/fan/createFan
+COntent-Type: application/json
+
+{
+    "modelNo": "modelNo fan4",
+    "info": "fan info4",
+    "type": "fan type",
+    "seriesNo": "seriesNo fan4",
+    "name": "fan4"
+}
+
+### fan pagination
+POST http://localhost:4000/api/fan/pagination
+COntent-Type: application/json
+
+{
+  "search": "ttt",
+  "filter": [
+      {
+          "type": "gender", 
+          "value": "all"
+      },
+      {
+          "type": "color", 
+          "value": "yellow"
+      },
+      {
+          "type": "favorite", 
+          "value": ["javascript", "node", "react"]
+      },
+      {
+          "type": "date range", 
+          "value": ["2023/02/01", "2023/02/13"],
+      },
+      {
+          "type": "date", 
+          "value": ["2023/02/01"]
+      }
+  ],
+  "currentPage": 1,
+  "perPageCounts": 2
 }

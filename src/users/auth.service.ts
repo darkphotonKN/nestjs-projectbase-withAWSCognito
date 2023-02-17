@@ -7,6 +7,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 
@@ -40,6 +41,7 @@ export class AuthService {
 
   async signIn(email: string, password: string) {
     const [user] = await this.usersService.find(email);
+    console.log('result:', user);
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -54,6 +56,8 @@ export class AuthService {
 
     if (encryptedIncPass === storedPass) {
       return user;
+    } else {
+      throw new UnauthorizedException('Credentials were incorrect');
     }
   }
 }

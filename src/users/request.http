@@ -3,9 +3,9 @@ POST http://localhost:4000/api/auth/signup
 Content-Type: application/json
 
 {
-  "name": "nicky2", 
-  "email": "babayaga3@wrathmail.com",
-  "password": "audemyndyss212"
+  "name": "testnewest", 
+  "email": "test2@test.com",
+  "password": "12345678"
 }
 
 ### Signs in an existing user 
@@ -13,15 +13,13 @@ POST http://localhost:4000/api/auth/signin
 Content-Type: application/json
 
 {
-  "email": "why",
-  "test": 12
+  "email": "test2@test.com",
+  "password": "12345678"
 }
 
-
-### 
-GET http://localhost:4000/auth/findAllUsers
+### Signs out currently logged-in user
+POST http://localhost:4000/api/auth/signout
 Content-Type: application/json
-
 
 ### Gets a particular user 
 GET http://localhost:4000/api/auth/user/4
@@ -45,21 +43,12 @@ DELETE http://localhost:4000/api/auth/user/3
 Content-Type: application/json
 
 
-### OAuth Sign in
-POST http://localhost:4000/api/auth/oauth/signin
-COntent-Type: application/json 
-
-{
-  "username": "test",
-  "password": "12321"
-}
-
 ### create new fan
 POST http://localhost:4000/api/fan/createFan
-COntent-Type: application/json
+Content-Type: application/json
 
 {
-    "modelNo": "modelNo fan4",
+    "modelNo": "modelNo fan1",
     "info": "fan info4",
     "type": "fan type",
     "seriesNo": "seriesNo fan4",
@@ -68,7 +57,7 @@ COntent-Type: application/json
 
 ### fan pagination
 POST http://localhost:4000/api/fan/pagination
-COntent-Type: application/json
+Content-Type: application/json
 
 {
   "search": "ttt",
@@ -97,3 +86,7 @@ COntent-Type: application/json
   "currentPage": 1,
   "perPageCounts": 2
 }
+
+### Check currently signed in user (session)
+GET http://localhost:4000/api/auth/loggedInUser
+Content-Type: application/json

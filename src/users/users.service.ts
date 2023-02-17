@@ -14,10 +14,15 @@ export class UsersService {
     // to tap into the
     const newUser = this.repo.create({ email, name, password });
     this.repo.save(newUser);
+
+    return newUser;
   }
 
   // find one user
   findOne(id: number) {
+    if (!id) {
+      return null;
+    }
     return this.repo.findOneBy({ id }); // returns one or null
   }
 

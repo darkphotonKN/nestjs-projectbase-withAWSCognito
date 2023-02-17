@@ -7,6 +7,7 @@ import {
   Delete,
   Query,
   Param,
+  Session,
 } from '@nestjs/common';
 
 // DTOs for validation
@@ -19,6 +20,9 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDTO } from './dtos/users.dto';
 import { AuthService } from './auth.service';
 import { SignInUserDTO } from './dtos/signin-user.dto';
+
+// Custom Decorator
+import { CurrentUser } from './decorators/current-user.decorator';
 
 // Nest approach (!warning! not the best solution, having a quick search online and have found similar thoughts on this
 // - and so I implemented custom interceptors (DTOs) for flexibility)
@@ -35,24 +39,43 @@ export class UsersController {
 
   @Post('/signup')
   // using the nestjs decorator Bouthdy and our custom DTO to makes sure email and password is validated
-  createUser(@Body() body: CreateUserDTO) {
+  async createUser(@Body() body: CreateUserDTO, @Session() session: any) {
     const { name, email, password } = body;
 
-    return this.authService.signUp(email, name, password);
+    const user = await this.authService.signUp(name, email, password);
+
+    session.userId = user.id;
+    return user;
   }
 
   @Post('/signin')
-  async signInUser(@Body() body: SignInUserDTO) {
+  async signInUser(@Body() body: SignInUserDTO, @Session() session: any) {
     const { email, password } = body;
 
     const user = await this.authService.signIn(email, password);
+
+    session.userId = user.id;
+
+    console.log('session:', session);
+
     if (user) {
-      return {
+      console.log('signed in!');
+      return JSON.stringify({
         message: 'Credentials authenticated, login was successful.',
-      };
+      });
     } else {
-      return user;
+      return JSON.stringify(user);
     }
+  }
+
+  @Post('/signout')
+  signOut(@Session() session: any) {
+    session.userId = null;
+  }
+
+  @Get('/loggedInUser')
+  getLoggedInUser(@CurrentUser() currentUser: any) {
+    return currentUser;
   }
 
   // remember that everything coming from requests are strings - we need to parse them into numbers ourselves
@@ -62,11 +85,12 @@ export class UsersController {
     return this.usersService.findOne(parseInt(id));
   }
 
-  // @Get('/findAllUsers')
-  // findAllUsers(@Query('email') email: string) {
-  //   console.log('email:', email);
-  //   return this.usersService.find(email);
-  // }
+  @Get('/findAllUsers')
+  async findAllUsers(@Query('email') email: string) {
+    console.log('email:', email);
+    console.log('all users:', await this.usersService.find(email));
+    return this.usersService.find(email);
+  }
 
   @Delete('/user/:id')
   removeUser(@Param('id') id: string) {

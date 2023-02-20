@@ -15,8 +15,8 @@ export class UsersService {
   create(name: string, email: string, password: string) {
     // creating an instance before saving is best practice, allowing hooks
     // to tap into the
-    const newUser = this.repo.create({ email, name, password });
-    this.repo.save(newUser);
+    const newUser = this.userRepository.create({ email, name, password });
+    this.userRepository.save(newUser);
 
     return newUser;
   }
@@ -26,7 +26,7 @@ export class UsersService {
     if (!id) {
       return null;
     }
-    return this.repo.findOneBy({ id }); // returns one or null
+    return this.userRepository.findOneBy({ id }); // returns one or null
   }
 
   // find all users that match criteria

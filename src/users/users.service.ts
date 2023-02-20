@@ -6,24 +6,27 @@ import { User } from './user.entity';
 @Injectable()
 export class UsersService {
   // this tells the DI system that we need the repository - it automatically creates an instance of this entity
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>
+  ) {}
 
   // creates a new user and stores it in the DB
   create(name: string, email: string, password: string) {
     // creating an instance before saving is best practice, allowing hooks
     // to tap into the
-    const newUser = this.repo.create({ email, name, password });
-    this.repo.save(newUser);
+    const newUser = this.userRepository.create({ email, name, password });
+    this.userRepository.save(newUser);
   }
 
   // find one user
   findOne(id: number) {
-    return this.repo.findOneBy({ id }); // returns one or null
+    return this.userRepository.findOneBy({ id }); // returns one or null
   }
 
   // find all users that match criteria
   find(email: string) {
-    return this.repo.find({ where: { email } }); // returns array of all results
+    return this.userRepository.find({ where: { email } }); // returns array of all results
   }
 
   // update a user
@@ -35,7 +38,7 @@ export class UsersService {
     }
 
     const newUser = { ...user, ...updateUser }; // can also use Object.assign(user, updateUser)
-    return this.repo.save(newUser);
+    return this.userRepository.save(newUser);
   }
 
   // remove a user
@@ -44,6 +47,6 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return this.repo.remove(user);
+    return this.userRepository.remove(user);
   }
 }

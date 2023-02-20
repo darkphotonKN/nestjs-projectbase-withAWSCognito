@@ -9,8 +9,8 @@ import {
 
 import { Exclude } from 'class-transformer';
 
-// all the properties that a user would have, and that we would want to store in the database
-@Entity() // tells TypeORM to make sure it creates a TABLE called User
+// all the properties that a fan would have, and that we would want to store in the database
+@Entity() // tells TypeORM to make sure it creates a TABLE called Fan
 export class Fan {
   @PrimaryGeneratedColumn() // look at the table of users and add the column "id"
   id: string;
@@ -19,7 +19,7 @@ export class Fan {
   type: string;
 
   @Column()
-  info: string; 
+  info: string;
 
   @Column()
   modelNo: string;

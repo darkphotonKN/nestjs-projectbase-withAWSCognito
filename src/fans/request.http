@@ -1,0 +1,67 @@
+### get all fans
+GET http://localhost:4000/api/fan
+Content-Type: application/json
+
+### find fan by id
+GET http://localhost:4000/api/fan/3
+Content-Type: application/json
+
+### create new fan
+POST http://localhost:4000/api/fan/createFan
+Content-Type: application/json
+
+{
+    "modelNo": "modelNo fan1",
+    "info": "fan info4",
+    "type": "fan type",
+    "seriesNo": "seriesNo fan4",
+    "name": "fan4"
+}
+
+### update fan
+PATCH http://localhost:4000/api/fan/3
+Content-Type: application/json
+
+{
+    "modelNo": "modelNo fan4545",
+    "info": "fan info4545",
+    "type": "fan type4545",
+    "seriesNo": "seriesNo fan4545",
+    "name": "fan4545"
+}
+
+### Deletes a fan
+DELETE http://localhost:4000/api/fan/4
+Content-Type: application/json
+
+### fan pagination
+POST http://localhost:4000/api/fan/pagination
+Content-Type: application/json
+
+{
+  "search": "ttt",
+  "filter": [
+      {
+          "type": "gender", 
+          "value": "all"
+      },
+      {
+          "type": "color", 
+          "value": "yellow"
+      },
+      {
+          "type": "favorite", 
+          "value": ["javascript", "node", "react"]
+      },
+      {
+          "type": "date range", 
+          "value": ["2023/02/01", "2023/02/13"],
+      },
+      {
+          "type": "date", 
+          "value": ["2023/02/01"]
+      }
+  ],
+  "currentPage": 1,
+  "perPageCounts": 2
+}

@@ -18,6 +18,12 @@ export class FansService {
     private fanRepository: Repository<Fan>
   ) {}
 
+  // finds all fans
+  async findAll() {
+    const fans = await this.fanRepository.find();
+    return { allData: fans };
+  }
+
   // finds a fan by id
   async findOne(id: string) {
     const fan = await this.fanRepository.findOne({

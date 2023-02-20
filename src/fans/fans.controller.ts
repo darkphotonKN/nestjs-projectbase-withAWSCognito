@@ -36,13 +36,17 @@ export class FansController {
     private fansService: FansService
   ) {}
 
+  @Get()
+  findAll() {
+    return this.fansService.findAll();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.fansService.findOne(id);
   }
 
   @Post('/createFan')
-  // using the nestjs decorator Body and our custom DTO to makes sure email and password is validated
   createFan(@Body() createFanDTO: CreateFanDTO) {
     return this.fansService.create(createFanDTO);
   }

@@ -20,6 +20,7 @@ import {
 
 import { CreateFanDTO } from './dtos/create-fan.dto';
 import { PaginationDTO } from './dtos/pagination.dto';
+import { UpdateFanDTO } from './dtos/update-fan.dto';
 // Nest recommended approach (not the best solution - I implemented custom interceptors (DTOs) for flexibility
 // @UseInterceptors(ClassSerializerInterceptor) // removes password in response if Exclude() decorator was
 // included in the entity creation
@@ -33,25 +34,38 @@ import { FansService } from './fans.service';
 export class FansController {
   constructor(
     private fansService: FansService
-    ) {}
+  ) {}
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.fansService.findOne(id);
+  }
 
   @Post('/createFan')
-  // using the nestjs decorator Bouthdy and our custom DTO to makes sure email and password is validated
-  createFan(@Body() body: CreateFanDTO) {
-    const { modelNo, info, type, seriesNo, name } = body;
+  // using the nestjs decorator Body and our custom DTO to makes sure email and password is validated
+  createFan(@Body() createFanDTO: CreateFanDTO) {
+    return this.fansService.create(createFanDTO);
+  }
 
-    return this.fansService.create(modelNo, info, type, seriesNo, name);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateFanDTO: UpdateFanDTO) {
+    return this.fansService.update(id, updateFanDTO);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.fansService.remove(id);
   }
 
   @Post('/pagination')
-  // using the nestjs decorator Bouthdy and our custom DTO to makes sure email and password is validated
+  // using the nestjs decorator Body and our custom DTO to makes sure email and password is validated
   pagination(@Body() body: PaginationDTO) {
     const { search, filter, currentPage, perPageCounts } = body;
 
     return this.fansService.pagination(
-      search, 
-      filter, 
-      currentPage, 
+      search,
+      filter,
+      currentPage,
       perPageCounts);
   }
 }

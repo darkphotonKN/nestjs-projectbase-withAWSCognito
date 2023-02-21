@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { AuthService } from './auth.service';
 import { UsersController } from './users.controller';
 
 // Database connection
@@ -9,7 +8,7 @@ import { User } from './user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])], // creates the respository for us
-  providers: [UsersService, AuthService],
+  providers: [UsersService],
   controllers: [UsersController],
 })
 export class UsersModule {}

@@ -1,57 +1,23 @@
-### Create a new user 
-POST http://localhost:4000/api/auth/signup 
-Content-Type: application/json
-
-{
-  "name": "testnewest", 
-  "email": "test2@test.com",
-  "password": "12345678"
-}
-
-### Signs in an existing user 
-POST http://localhost:4000/api/auth/signin
-Content-Type: application/json
-
-{
-  "email": "test2@test.com",
-  "password": "12345678"
-}
-
-### Signs out currently logged-in user
-POST http://localhost:4000/api/auth/signout
-Content-Type: application/json
-
 ### Gets a particular user 
-GET http://localhost:4000/api/auth/user/4
+GET http://localhost:4000/api/user/4
 Content-Type: application/json 
 
 ### Gets all users with this criteria  
-GET http://localhost:4000/api/auth/findAllUsers
-Content-Type: application/json 
+GET http://localhost:4000/api/user/findAllUsers
+Content-Type: application/json
+
+### Gets ALL user
+GET http://localhost:4000/api/user/activeUser
+Content-Type: application/json
 
 ### Update a user 
-PATCH http://localhost:4000/api/auth/updateUser/4
+PATCH http://localhost:4000/api/user/updateUser/4
 Content-Type: application/json
 
 {
   "password": "drowssap"
 }
 
-
 ### Deletes a user
-DELETE http://localhost:4000/api/auth/user/3
-Content-Type: application/json
-
-
-### OAuth Sign in
-POST http://localhost:4000/api/auth/oauth/signin
-COntent-Type: application/json 
-
-{
-  "username": "test",
-  "password": "12321"
-}
-
-### Check currently signed in user (session)
-GET http://localhost:4000/api/auth/loggedInUser
+DELETE http://localhost:4000/api/user/3
 Content-Type: application/json

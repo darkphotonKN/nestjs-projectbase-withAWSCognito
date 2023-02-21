@@ -1,3 +1,5 @@
+import { ActiveUserData } from './../iam/interfaces/active-user.decorator';
+import { ActiveUser } from './../iam/decorators/active-user-decorator';
 import {
   Controller,
   Post,
@@ -11,18 +13,12 @@ import {
 } from '@nestjs/common';
 
 // DTOs for validation
-import { CreateUserDTO } from './dtos/create-user.dto';
 import { UpdateUserDTO } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
 
 // Custom Interceptor for Serialization
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDTO } from './dtos/users.dto';
-import { AuthService } from './auth.service';
-import { SignInUserDTO } from './dtos/signin-user.dto';
-
-// Custom Decorator
-import { CurrentUser } from './decorators/current-user.decorator';
 
 // Nest approach (!warning! not the best solution, having a quick search online and have found similar thoughts on this
 // - and so I implemented custom interceptors (DTOs) for flexibility)
@@ -30,56 +26,24 @@ import { CurrentUser } from './decorators/current-user.decorator';
 
 // using my recommended approach
 @Serialize(UserDTO) // can also be applied per request handler method, right now its global for the entire controller
-@Controller('auth')
+@Controller('user')
 export class UsersController {
   constructor(
     private usersService: UsersService,
-    private authService: AuthService,
   ) {}
-
-  @Post('/signup')
-  // using the nestjs decorator Bouthdy and our custom DTO to makes sure email and password is validated
-  async createUser(@Body() body: CreateUserDTO, @Session() session: any) {
-    const { name, email, password } = body;
-
-    const user = await this.authService.signUp(name, email, password);
-
-    session.userId = user.id;
-    return user;
-  }
-
-  @Post('/signin')
-  async signInUser(@Body() body: SignInUserDTO, @Session() session: any) {
-    const { email, password } = body;
-
-    const user = await this.authService.signIn(email, password);
-
-    session.userId = user.id;
-
-    console.log('session:', session);
-
-    if (user) {
-      console.log('signed in!');
-      return JSON.stringify({
-        message: 'Credentials authenticated, login was successful.',
-      });
-    } else {
-      return JSON.stringify(user);
-    }
-  }
 
   @Post('/signout')
   signOut(@Session() session: any) {
     session.userId = null;
   }
 
-  @Get('/loggedInUser')
-  getLoggedInUser(@CurrentUser() currentUser: any) {
-    return currentUser;
+  @Get('/activeUser')
+  getActiveUser(@ActiveUser() user: ActiveUserData) {
+    return user;
   }
 
   // remember that everything coming from requests are strings - we need to parse them into numbers ourselves
-  @Get('/user/:id')
+  @Get('/:id')
   findUser(@Param('id') id: string) {
     console.log('Finding user...');
     return this.usersService.findOne(parseInt(id));
@@ -92,12 +56,12 @@ export class UsersController {
     return this.usersService.find(email);
   }
 
-  @Delete('/user/:id')
+  @Delete('/:id')
   removeUser(@Param('id') id: string) {
     return this.usersService.remove(parseInt(id));
   }
 
-  @Patch('/updateUser/:id')
+  @Patch('/:id')
   // updates an existing user
   async updateUser(@Param('id') id: string, @Body() body: UpdateUserDTO) {
     this.usersService.update(parseInt(id), body);

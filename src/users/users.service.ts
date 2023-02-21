@@ -11,16 +11,6 @@ export class UsersService {
     private userRepository: Repository<User>
   ) {}
 
-  // creates a new user and stores it in the DB
-  create(name: string, email: string, password: string) {
-    // creating an instance before saving is best practice, allowing hooks
-    // to tap into the
-    const newUser = this.userRepository.create({ email, name, password });
-    this.userRepository.save(newUser);
-
-    return newUser;
-  }
-
   // find one user
   findOne(id: number) {
     if (!id) {

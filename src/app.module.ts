@@ -12,6 +12,7 @@ import { TablesModule } from './tables/tables.module';
 
 import { Fan } from './fans/fan.entity';
 import { FansModule } from './fans/fans.module';
+import { IamModule } from './iam/iam.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -25,6 +26,7 @@ import { FansModule } from './fans/fans.module';
     UsersModule,
     TablesModule,
     FansModule,
+    IamModule,
   ],
   controllers: [],
   providers: [],

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { AuthService } from './auth.service';
+import { AuthService } from '../iam/authentication/auth.service';
 import { UsersController } from './users.controller';
 
 // Database connection

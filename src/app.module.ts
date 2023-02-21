@@ -12,19 +12,21 @@ import { TablesModule } from './tables/tables.module';
 
 import { Fan } from './fans/fan.entity';
 import { FansModule } from './fans/fans.module';
+import { IamModule } from './iam/iam.module';
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'sqlite', // type of database
-      database: 'db.sqlite', // name of database
-      entities: [User, Table, Fan],
-      synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
-    }),
+    // TypeOrmModule.forRoot({
+    //   type: 'sqlite', // type of database
+    //   database: 'db.sqlite', // name of database
+    //   entities: [User, Table, Fan],
+    //   synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
+    // }),
     ConfigModule.forRoot(),
-    // DatabaseModule,
+    DatabaseModule,
     UsersModule,
     TablesModule,
     FansModule,
+    IamModule,
   ],
   controllers: [],
   providers: [],

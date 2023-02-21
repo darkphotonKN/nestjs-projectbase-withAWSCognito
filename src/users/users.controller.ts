@@ -18,7 +18,7 @@ import { UsersService } from './users.service';
 // Custom Interceptor for Serialization
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDTO } from './dtos/users.dto';
-import { AuthService } from './auth.service';
+import { AuthService } from '../iam/authentication/auth.service';
 import { SignInUserDTO } from './dtos/signin-user.dto';
 
 // Custom Decorator

@@ -1,0 +1,36 @@
+### Create a new user 
+POST http://localhost:4000/api/auth/signup 
+Content-Type: application/json
+
+{
+  "email": "michaelcheng@gmail.com",
+  "password": "m12345",
+  "name": "michael"
+}
+
+### Signs in an existing user 
+POST http://localhost:4000/api/auth/signin
+Content-Type: application/json
+
+{
+  "email": "michaelcheng@gmail.com",
+  "password": "m123456"
+}
+
+### Signs out currently logged-in user
+POST http://localhost:4000/api/auth/signout
+Content-Type: application/json
+
+
+### OAuth Sign in
+POST http://localhost:4000/api/auth/oauth/signin
+COntent-Type: application/json 
+
+{
+  "username": "test",
+  "password": "12321"
+}
+
+### Check currently signed in user (session)
+GET http://localhost:4000/api/auth/loggedInUser
+Content-Type: application/json

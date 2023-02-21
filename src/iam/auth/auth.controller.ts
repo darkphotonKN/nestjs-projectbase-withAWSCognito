@@ -1,8 +1,12 @@
+import { AuthType } from './enums/auth-type.enums';
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDTO } from './dto/sign-in.dto';
 import { SignUpDTO } from './dto/sign-up.dto';
+import { Auth } from './decorators/auth.decorator';
+import { RefreshTokenDTO } from './dto/refresh-token.dto';
 
+@Auth(AuthType.None)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -16,5 +20,11 @@ export class AuthController {
   @Post('signin')
   signIn(@Body() signInDto: SignInDTO) {
     return this.authService.signIn(signInDto);
+  }
+
+  @HttpCode(HttpStatus.OK) // changed since the default is 201
+  @Post('refresh-tokens')
+  refreshTokens(@Body() refreshTokenDto: RefreshTokenDTO) {
+    return this.authService.refreshTokens(refreshTokenDto);
   }
 }

@@ -1,3 +1,5 @@
+import { ActiveUserData } from './../iam/interfaces/active-user.decorator';
+import { ActiveUser } from './../iam/decorators/active-user-decorator';
 import {
   Controller,
   Post,
@@ -18,9 +20,6 @@ import { UsersService } from './users.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDTO } from './dtos/users.dto';
 
-// Custom Decorator
-import { CurrentUser } from './decorators/current-user.decorator';
-
 // Nest approach (!warning! not the best solution, having a quick search online and have found similar thoughts on this
 // - and so I implemented custom interceptors (DTOs) for flexibility)
 // @UseInterceptors(ClassSerializerInterceptor) // removes password in response if Exclude() decorator was
@@ -38,9 +37,9 @@ export class UsersController {
     session.userId = null;
   }
 
-  @Get('/loggedInUser')
-  getLoggedInUser(@CurrentUser() currentUser: any) {
-    return currentUser;
+  @Get('/activeUser')
+  getActiveUser(@ActiveUser() user: ActiveUserData) {
+    return user;
   }
 
   // remember that everything coming from requests are strings - we need to parse them into numbers ourselves

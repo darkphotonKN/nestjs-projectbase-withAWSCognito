@@ -9,7 +9,6 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersService } from '../../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigType } from '@nestjs/config';
 import jwtConfig from '../config/jwt.config';
@@ -17,16 +16,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/user.entity';
 import { HashingService } from '../hashing/hashing.service';
+import { ActiveUserData } from '../interfaces/active-user.decorator';
+import { RefreshTokenDTO } from './dto/refresh-token.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly hashingService: HashingService,
-    // private usersService: UsersService,
-    // private readonly jwtService: JwtService,
-    // @Inject(jwtConfig.KEY)
-    // private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+    private readonly jwtService: JwtService,
+    @Inject(jwtConfig.KEY)
+    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
   ) {}
 
   async signUp(signUpDto: SignUpDTO) {
@@ -60,7 +60,66 @@ export class AuthService {
     if (!isEqual) {
       throw new UnauthorizedException('Password does not match');
     }
-    // TODO: add jwt token
-    return true;
+    const [accessToken, refreshToken] = await Promise.all([
+      this.signToken<Partial<ActiveUserData>>(
+        user.id,
+        this.jwtConfiguration.accessTokenTtl,
+        { email: user.email, name: user.name }
+      ),
+      this.signToken(user.id, this.jwtConfiguration.refreshTokenTtl),
+    ]);
+    return {
+      user,
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  private async signToken<T>(userId: number, expiresIn: number, payload?: T) {
+    return await this.jwtService.signAsync(
+      {
+        sub: userId,
+        ...payload,
+      },
+      {
+        audience: this.jwtConfiguration.audience,
+        issuer: this.jwtConfiguration.issuer,
+        secret: this.jwtConfiguration.secret,
+        expiresIn: this.jwtConfiguration.accessTokenTtl,
+      }
+    );
+  }
+
+  async refreshTokens(refreshTokenDto: RefreshTokenDTO) {
+    try {
+      const { sub } = await this.jwtService.verifyAsync<
+        Pick<ActiveUserData, 'sub'>
+      >(refreshTokenDto.refreshToken, {
+        secret: this.jwtConfiguration.secret,
+        audience: this.jwtConfiguration.audience,
+        issuer: this.jwtConfiguration.issuer,
+      });
+      const user = await this.usersRepository.findOneByOrFail({
+        id: sub,
+      });
+      return this.generateTokens(user);
+    } catch (err) {
+      throw new UnauthorizedException();
+    }
+  }
+
+  async generateTokens(user: User) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.signToken<Partial<ActiveUserData>>(
+        user.id,
+        this.jwtConfiguration.accessTokenTtl,
+        { email: user.email, name: user.name },
+      ),
+      this.signToken(user.id, this.jwtConfiguration.refreshTokenTtl),
+    ]);
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }

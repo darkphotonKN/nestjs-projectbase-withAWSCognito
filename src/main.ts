@@ -32,18 +32,30 @@ async function bootstrap() {
     }),
   );
 
-  // Setting up Swagger document 
+  // Setting up Swagger document
+  app.setGlobalPrefix('api');
   const options = new DocumentBuilder()
     .setTitle('cm-portal-docs')
     .setDescription('a documentation for all the apis related to cooler master portal BE application')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth', // This name here is important for matching up with @ApiBearerAuth() in your controller!
+    )
+    .setBasePath('api')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
 
   SwaggerModule.setup('api-docs', app, document);
 
-  app.setGlobalPrefix('api');
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
 

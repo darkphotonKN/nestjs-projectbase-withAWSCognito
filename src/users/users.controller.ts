@@ -10,6 +10,8 @@ import {
   Query,
   Param,
   Session,
+  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 
 // DTOs for validation
@@ -20,6 +22,14 @@ import { UsersService } from './users.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDTO } from './dtos/users.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
+import { SignInUserDTO } from './dtos/signin-user.dto';
+
+// Custom Decorator
+import { CurrentUser } from './decorators/current-user.decorator';
+// Custom user interceptor
+import { User } from './user.entity';
+import { AuthGuard } from 'src/guard/auth.guard';
 
 // Nest approach (!warning! not the best solution, having a quick search online and have found similar thoughts on this
 // - and so I implemented custom interceptors (DTOs) for flexibility)
@@ -33,6 +43,38 @@ export class UsersController {
   constructor(
     private usersService: UsersService,
   ) {}
+
+  @Post('/signup')
+  // using the nestjs decorator Bouthdy and our custom DTO to makes sure email and password is validated
+  async createUser(@Body() body: CreateUserDTO, @Session() session: any) {
+    const { name, email, password } = body;
+
+    const user = await this.authService.signUp(name, email, password);
+
+    session.userId = user.id;
+    return user;
+  }
+
+  @Post('/signin')
+  async signInUser(@Body() body: SignInUserDTO, @Session() session: any) {
+    const { email, password } = body;
+
+    const user = await this.authService.signIn(email, password);
+
+    session.userId = user.id;
+
+    console.log('session:', session);
+
+    // TODO
+    if (user) {
+      console.log('signed in!');
+      return JSON.stringify({
+        message: 'Credentials authenticated, login was successful.',
+      });
+    } else {
+      return JSON.stringify(user);
+    }
+  }
 
   @Post('/signout')
   signOut(@Session() session: any) {

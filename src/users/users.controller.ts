@@ -19,6 +19,7 @@ import { UsersService } from './users.service';
 // Custom Interceptor for Serialization
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDTO } from './dtos/users.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 // Nest approach (!warning! not the best solution, having a quick search online and have found similar thoughts on this
 // - and so I implemented custom interceptors (DTOs) for flexibility)
@@ -26,6 +27,7 @@ import { UserDTO } from './dtos/users.dto';
 
 // using my recommended approach
 @Serialize(UserDTO) // can also be applied per request handler method, right now its global for the entire controller
+@ApiTags('Users')
 @Controller('user')
 export class UsersController {
   constructor(

@@ -6,10 +6,6 @@ import { DatabaseModule } from './db/db.module'
 // DB connection
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
-
-import { Table } from './tables/table.entity';
-import { TablesModule } from './tables/tables.module';
-
 import { Fan } from './fans/fan.entity';
 import { FansModule } from './fans/fans.module';
 import { IamModule } from './iam/iam.module';
@@ -18,13 +14,12 @@ import { IamModule } from './iam/iam.module';
     // TypeOrmModule.forRoot({
     //   type: 'sqlite', // type of database
     //   database: 'db.sqlite', // name of database
-    //   entities: [User, Table, Fan],
+    //   entities: [User, Fan],
     //   synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
     // }),
     ConfigModule.forRoot(),
     DatabaseModule,
     UsersModule,
-    TablesModule,
     FansModule,
     IamModule,
   ],

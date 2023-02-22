@@ -32,18 +32,19 @@ async function bootstrap() {
     }),
   );
 
-  // Setting up Swagger document 
+  // Setting up Swagger document
+  app.setGlobalPrefix('api');
   const options = new DocumentBuilder()
     .setTitle('cm-portal-docs')
     .setDescription('a documentation for all the apis related to cooler master portal BE application')
     .setVersion('1.0')
+    .setBasePath('api')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
 
   SwaggerModule.setup('api-docs', app, document);
 
-  app.setGlobalPrefix('api');
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
 

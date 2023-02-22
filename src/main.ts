@@ -38,6 +38,17 @@ async function bootstrap() {
     .setTitle('cm-portal-docs')
     .setDescription('a documentation for all the apis related to cooler master portal BE application')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth', // This name here is important for matching up with @ApiBearerAuth() in your controller!
+    )
     .setBasePath('api')
     .build();
 

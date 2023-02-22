@@ -8,7 +8,7 @@ import {
   Query,
   Param,
 } from '@nestjs/common';
-import { ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 // DTOs for validation
 
@@ -40,31 +40,37 @@ export class FansController {
 
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Get()
+  @ApiBearerAuth('JWT-auth')
   findAll() {
     return this.fansService.findAll();
   }
 
   @Get(':id')
+  @ApiBearerAuth('JWT-auth')
   findOne(@Param('id') id: string) {
     return this.fansService.findOne(id);
   }
 
   @Post('/createFan')
+  @ApiBearerAuth('JWT-auth')
   createFan(@Body() createFanDTO: CreateFanDTO) {
     return this.fansService.create(createFanDTO);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('JWT-auth')
   update(@Param('id') id: string, @Body() updateFanDTO: UpdateFanDTO) {
     return this.fansService.update(id, updateFanDTO);
   }
 
   @Delete(':id')
+  @ApiBearerAuth('JWT-auth')
   remove(@Param('id') id: string) {
     return this.fansService.remove(id);
   }
 
   @Post('/pagination')
+  @ApiBearerAuth('JWT-auth')
   // using the nestjs decorator Body and our custom DTO to makes sure email and password is validated
   pagination(@Body() body: PaginationDTO) {
     const { search, filter, currentPage, perPageCounts } = body;

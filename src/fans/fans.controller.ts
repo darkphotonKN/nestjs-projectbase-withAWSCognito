@@ -8,6 +8,7 @@ import {
   Query,
   Param,
 } from '@nestjs/common';
+import { ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 // DTOs for validation
 
@@ -30,12 +31,14 @@ import { FansService } from './fans.service';
 
 // using my recommended approach
 // @Serialize(FanItemDTO)
+@ApiTags('Fans')
 @Controller('fan')
 export class FansController {
   constructor(
     private fansService: FansService
   ) {}
 
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Get()
   findAll() {
     return this.fansService.findAll();

@@ -7,6 +7,7 @@ Content-Type: application/json
   "password": "m12345",
   "name": "michael"
 }
+ 
 
 ### Signs in an existing user 
 POST http://localhost:4000/api/auth/signin

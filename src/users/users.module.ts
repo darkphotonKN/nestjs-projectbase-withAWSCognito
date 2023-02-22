@@ -12,7 +12,6 @@ import { CurrentUserInterceptor } from './interceptors/current-user.interceptor'
   imports: [TypeOrmModule.forFeature([User])], // creates the respository for us
   providers: [
     UsersService,
-    AuthService,
     {
       provide: APP_INTERCEPTOR,
       useClass: CurrentUserInterceptor,

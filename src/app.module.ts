@@ -2,22 +2,25 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './db/db.module'
-
-// DB connection
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/user.entity';
-import { Fan } from './fans/fan.entity';
 import { FansModule } from './fans/fans.module';
 import { IamModule } from './iam/iam.module';
+import { LoggerModule } from 'nestjs-pino';
 @Module({
   imports: [
-    // TypeOrmModule.forRoot({
-    //   type: 'sqlite', // type of database
-    //   database: 'db.sqlite', // name of database
-    //   entities: [User, Fan],
-    //   synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
-    // }),
     ConfigModule.forRoot(),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        customProps: (req, res) => ({
+          context: 'HTTP',
+        }),
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            singleLine: true,
+          },
+        },
+      },
+    }),
     DatabaseModule,
     UsersModule,
     FansModule,

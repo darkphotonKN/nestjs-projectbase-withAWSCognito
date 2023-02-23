@@ -7,10 +7,12 @@ const cookieSession = require('cookie-session');
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
+    bufferLogs: true
   });
   // allows nestjs to strip all properties sent in a request
   // that was now allowed via decorators
@@ -21,6 +23,8 @@ async function bootstrap() {
       keys: ['test'],
     }),
   );
+  app.useLogger(app.get(Logger));
+  app.useGlobalInterceptors(new LoggerErrorInterceptor());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // any property not included in the whitelist will be stripped from the request

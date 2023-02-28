@@ -8,6 +8,8 @@ import {
   Query,
   Param,
   Session,
+  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 
 // DTOs for validation
@@ -23,6 +25,10 @@ import { SignInUserDTO } from './dtos/signin-user.dto';
 
 // Custom Decorator
 import { CurrentUser } from './decorators/current-user.decorator';
+
+// Custom user interceptor
+import { User } from './user.entity';
+import { AuthGuard } from 'src/guard/auth.guard';
 
 // Nest approach (!warning! not the best solution, having a quick search online and have found similar thoughts on this
 // - and so I implemented custom interceptors (DTOs) for flexibility)
@@ -73,8 +79,9 @@ export class UsersController {
     session.userId = null;
   }
 
+  @UseGuards(AuthGuard)
   @Get('/loggedInUser')
-  getLoggedInUser(@CurrentUser() currentUser: any) {
+  getLoggedInUser(@CurrentUser() currentUser: User) {
     return currentUser;
   }
 

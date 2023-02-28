@@ -8,6 +8,6 @@ export const CurrentUser = createParamDecorator(
     // gets current underlying request
     const request = context.switchToHttp().getRequest();
     console.log('session userId:', request.session.userId);
-    return 'custom decorator';
+    return request.currentUser;
   },
 );

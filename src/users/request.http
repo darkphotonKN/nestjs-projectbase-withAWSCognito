@@ -1,5 +1,5 @@
 ### Create a new user 
-POST http://localhost:4000/api/auth/signup 
+POST http://localhost:4004/api/auth/signup 
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Signs in an existing user 
-POST http://localhost:4000/api/auth/signin
+POST http://localhost:4004/api/auth/signin
 Content-Type: application/json
 
 {
@@ -18,19 +18,19 @@ Content-Type: application/json
 }
 
 ### Signs out currently logged-in user
-POST http://localhost:4000/api/auth/signout
+POST http://localhost:4004/api/auth/signout
 Content-Type: application/json
 
 ### Gets a particular user 
-GET http://localhost:4000/api/auth/user/4
+GET http://localhost:4004/api/auth/user/4
 Content-Type: application/json 
 
 ### Gets all users with this criteria  
-GET http://localhost:4000/api/auth/findAllUsers
+GET http://localhost:4004/api/auth/findAllUsers
 Content-Type: application/json 
 
 ### Update a user 
-PATCH http://localhost:4000/api/auth/updateUser/4
+PATCH http://localhost:4004/api/auth/updateUser/4
 Content-Type: application/json
 
 {
@@ -39,12 +39,12 @@ Content-Type: application/json
 
 
 ### Deletes a user
-DELETE http://localhost:4000/api/auth/user/3
+DELETE http://localhost:4004/api/auth/user/3
 Content-Type: application/json
 
 
 ### create new fan
-POST http://localhost:4000/api/fan/createFan
+POST http://localhost:4004/api/fan/createFan
 Content-Type: application/json
 
 {
@@ -56,7 +56,7 @@ Content-Type: application/json
 }
 
 ### fan pagination
-POST http://localhost:4000/api/fan/pagination
+POST http://localhost:4004/api/fan/pagination
 Content-Type: application/json
 
 {
@@ -88,5 +88,5 @@ Content-Type: application/json
 }
 
 ### Check currently signed in user (session)
-GET http://localhost:4000/api/auth/loggedInUser
+GET http://localhost:4004/api/auth/loggedInUser
 Content-Type: application/json

@@ -1,0 +1,13 @@
+### Creates report 
+POST http://localhost:4004/api/reports/create
+Content-Type: application/json
+
+{
+  "price": 20000,
+  "make": "Tesla",
+  "model": "Model S",
+  "year": 2022,
+  "lng": 0,
+  "lat": 0,
+  "mileage": 3000
+}

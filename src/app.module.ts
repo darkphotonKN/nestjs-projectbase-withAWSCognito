@@ -1,16 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { ReportsModule } from './reports/reports.module';
 
 // DB connection
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
-
-import { Table } from './tables/table.entity';
-import { TablesModule } from './tables/tables.module';
-
-import { Fan } from './fans/fan.entity';
-import { FansModule } from './fans/fans.module';
+import { Reports } from './reports/reports.entity';
 
 @Module({
   imports: [
@@ -45,13 +41,12 @@ import { FansModule } from './fans/fans.module';
           type: 'sqlite',
           database: config.get<string>('DB_NAME'),
           synchronize: true,
-          entities: [User],
+          entities: [User, Reports],
         };
       },
     }),
     UsersModule,
-    TablesModule,
-    FansModule,
+    ReportsModule,
   ],
   controllers: [],
   providers: [],

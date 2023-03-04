@@ -5,9 +5,11 @@ import {
   AfterInsert,
   AfterRemove,
   AfterUpdate,
+  OneToMany,
 } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
+import { Reports } from 'src/reports/reports.entity';
 
 // all the properties that a user would have, and that we would want to store in the database
 @Entity() // tells TypeORM to make sure it creates a TABLE called User
@@ -25,6 +27,11 @@ export class User {
   // Nest recommended approach but not the best - I implemented custom interceptors (DTOs) for flexibility
   // @Exclude() // excludes this property when nestjs converts the entity to json behind the scenes
   password: string;
+
+  // building association relations with TypeORM
+  // one to many
+  @OneToMany(() => Reports, (report) => report.user)
+  reports: Reports[];
 
   // typeORM Hooks for handling debugging / testing
   // this only works if you create an entity instance before saving to DB

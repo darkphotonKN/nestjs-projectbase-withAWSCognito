@@ -3,11 +3,11 @@ POST http://localhost:4004/api/reports/create
 Content-Type: application/json
 
 {
-  "price": 20000,
-  "make": "Tesla",
-  "model": "Model S",
+  "price": 34000,
+  "make": "Landrover",
+  "model": "Range Rover Velar",
   "year": 2022,
   "lng": 0,
   "lat": 0,
-  "mileage": 3000
+  "mileage": 9912
 }

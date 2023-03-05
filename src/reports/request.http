@@ -5,7 +5,7 @@ Content-Type: application/json
 {
   "price": 34000,
   "make": "Landrover",
-  "model": "Range Rover Velar",
+  "model": "Unirover",
   "year": 2022,
   "lng": 0,
   "lat": 0,

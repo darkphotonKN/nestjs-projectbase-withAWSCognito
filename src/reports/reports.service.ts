@@ -13,4 +13,6 @@ export class ReportsService {
     // save instance
     return this.repo.save(report);
   }
+
+  approve(id: string, approved: boolean) {}
 }

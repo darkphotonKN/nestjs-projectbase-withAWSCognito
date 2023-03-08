@@ -3,9 +3,9 @@ POST http://localhost:4000/api/auth/signup
 Content-Type: application/json
 
 {
-  "name": "JohnWick", 
-  "email": "babayaga@wrathmail.com",
-  "password": "andyss"
+  "name": "JohnsssWick", 
+  "email": "babadsyaga@wrathmail.com",
+  "password": "andysss"
 }
 
 ### Gets a particular user 
@@ -53,32 +53,51 @@ COntent-Type: application/json
 
 ### fan pagination
 POST http://localhost:4000/api/fan/pagination
-COntent-Type: application/json
+Content-Type: application/json
 
 {
-  "search": "ttt",
+  "search": "",
   "filter": [
       {
           "type": "gender", 
-          "value": ["all"]
+          "value": "all"
       },
       {
           "type": "color", 
-          "value": ["yellow"]
+          "value": "yellow"
       },
       {
           "type": "favorite", 
           "value": ["javascript", "node", "react"]
       },
       {
-          "type": "date range", 
-          "value": ["2023/02/01","2023/02/13"]
+          "type": "date range",
+          "startDate": "2023/02/01",
+          "endDate": "2023/02/13"
       },
       {
           "type": "date", 
-          "value": ["2023/02/01"]
+          "value": "2023/02/01"
       }
   ],
   "currentPage": 1,
-  "perPageCounts": 2
+  "limit": 10,
+  "order": "DESC"
+}
+
+### fan fanList
+POST http://localhost:4000/api/fan/fanList
+COntent-Type: application/json 
+
+{
+  "search": "",
+  "filter": [
+      {
+          "type": "date", 
+          "value": "2023-02-15"
+      }
+  ],
+  "currentPage": 1,
+  "limit": 10,
+  "order": "DESC"
 }

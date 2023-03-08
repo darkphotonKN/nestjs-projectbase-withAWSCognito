@@ -1,6 +1,7 @@
 // lists of the different properities that all a create user api should have
 import { IsString, IsNumber, IsArray } from 'class-validator'; // provides decorators to validate properties
 
+import { FindOptionsOrderValue } from 'typeorm';
 export class PaginationDTO {
   @IsString()
   search: string;
@@ -12,6 +13,9 @@ export class PaginationDTO {
   currentPage: number;
 
   @IsNumber()
-  perPageCounts: number;
+  limit: number;
+  
+  @IsString()
+  order: 'ASC' | 'DESC';
 
 }

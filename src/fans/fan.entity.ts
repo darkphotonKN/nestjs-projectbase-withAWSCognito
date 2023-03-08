@@ -5,6 +5,7 @@ import {
   AfterInsert,
   AfterRemove,
   AfterUpdate,
+  CreateDateColumn
 } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
@@ -29,6 +30,12 @@ export class Fan {
 
   @Column()
   name: string;
+
+  @CreateDateColumn()
+  updateDate: Date; // Creation date
+  
+  @CreateDateColumn()
+  systemDate: Date; // Creation date
 
   // typeORM Hooks for handling debugging / testing
   // this only works if you create an entity instance before saving to DB

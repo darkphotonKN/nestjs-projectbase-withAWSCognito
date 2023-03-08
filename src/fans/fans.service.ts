@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository, Like } from 'typeorm';
+import { Repository, Like, FindOptionsOrderValue } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Fan } from './fan.entity';
 
 interface Filter {
   type: string,
-  value: string[]
+  value: string[],
+  startDate?: string,
+  endDate?: string,
 }
 
 @Injectable()
@@ -21,27 +23,45 @@ export class FansService {
     return { createdData: { modelNo, info, type, seriesNo, name }};
   }
 
-  async pagination(search: string, filter: Filter[], currentPage: number, limit: number) {
-    const take = limit || 10
-    const page = currentPage || 1;
-    const skip= (page-1) * take ;
-    const keyword = search || 'fan'
-    const data2 = await this.repo.findAndCount({
-      where: { 
-        // modelNo: Like(`%${keyword}%`),
-        // seriesNo: Like(`%${keyword}%`),
-        // info: Like(`%${keyword}%`), 
-        // type: Like(`%${keyword}%`),
-        name: Like(`%${keyword}%`)
-      },
-      order: { name: "DESC" },
-      take: take, // limit count per page
-      skip: skip // skip data earlier than currentPage
-  })
-    return {
-      totalCount:data2[1], 
-      data: data2[0],
-      currentPage,
-    };
-  }
+  // async pagination(
+  //   search: string, 
+  //   filter: Filter[], 
+  //   currentPage: number, 
+  //   limit: number, 
+  //   order: 'ASC' | 'DESC'
+  //   ) {
+  //   const take = limit || 10;
+  //   const page = currentPage || 1;
+  //   const skip= (page-1) * take ;
+  //   const keyword = search || 'fan'
+  //   const orderVAlue = order || 'DESC';
+
+  //   const filterFormat = (filter: any) => {
+
+  //     return {info: "fan info4"}
+  //   };
+
+  //   const keywordFormat = keyword && [
+  //     {info: Like(`%${keyword}%`)}, 
+  //     {type: Like(`%${keyword}%`)}, 
+  //     {name: Like(`%${keyword}%`)}, 
+  //     {modelNo: Like(`%${keyword}%`)}, 
+  //     {seriesNo: Like(`%${keyword}%`)}
+  //   ];
+
+  //   const data = await this.repo
+  //   .createQueryBuilder("fan")
+  //   .where(filterFormat(filter))
+  //   .andWhere(keywordFormat)
+  //   .orderBy({id: orderVAlue})
+  //   .take(take)
+  //   .skip(skip)
+  //   .getManyAndCount();
+
+  //   return {
+  //     totalCount: data[1], 
+  //     data: data[0],
+  //     currentPage,
+  //   };
+  // }
 }
